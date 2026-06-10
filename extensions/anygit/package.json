@@ -1,0 +1,86 @@
+{
+  "name": "anygit",
+  "private": true,
+  "scripts": {
+    "build": "vite build && vite build --config vite.diff-viewer.config.js && node -e \"require('fs').copyFileSync('package.json','dist/package.json')\"",
+    "build:surfaces": "vite build",
+    "dev": "vite",
+    "update-skill": "node scripts/update-skill.mjs"
+  },
+  "type": "module",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "tailwindcss": "^4.3.0",
+    "vite": "^7.3.5"
+  },
+  "muxy": {
+    "$schema": "https://raw.githubusercontent.com/muxy-app/muxy/main/docs/extensions/schema/manifest.schema.json",
+    "description": "Source control and pull requests across GitHub, Forgejo, and Gitea — one panel, auto-detected per repository",
+    "permissions": [
+      "commands:exec",
+      "panels:write",
+      "tabs:write",
+      "worktrees:read",
+      "worktrees:write",
+      "notifications:write",
+      "git:write"
+    ],
+    "events": [
+      "project.switched",
+      "worktree.switched",
+      "file.changed"
+    ],
+    "panels": [
+      {
+        "id": "scm",
+        "title": "Source Control",
+        "entry": "panel/index.html",
+        "position": "right",
+        "mode": "pinned",
+        "hiddenControls": ["icon", "title", "close", "pin", "position"]
+      }
+    ],
+    "tabTypes": [
+      {
+        "id": "diff-viewer",
+        "title": "Diff Viewer",
+        "entry": "panel/diff-viewer.html"
+      }
+    ],
+    "commands": [
+      {
+        "id": "toggle-scm",
+        "title": "Toggle Source Control",
+        "defaultShortcut": "cmd+y",
+        "action": {
+          "kind": "togglePanel",
+          "panel": "scm"
+        }
+      },
+      {
+        "id": "refresh-scm",
+        "title": "Refresh"
+      }
+    ],
+    "topbarItems": [
+      {
+        "id": "scm",
+        "icon": {
+          "symbol": "arrow.triangle.branch"
+        },
+        "tooltip": "Toggle Source Control",
+        "command": "toggle-scm"
+      }
+    ],
+    "marketplace": {
+      "author": "Sean Gallagher",
+      "github": "seanpmgallagher",
+      "repository": "https://github.com/seanpmgallagher/extensions",
+      "categories": ["git", "source-control", "forgejo", "gitea"],
+      "icon": "icon.svg",
+      "screenshots": ["screenshots/screenshot-1.png", "screenshots/screenshot-2.png"]
+    }
+  }
+}
